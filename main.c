@@ -43,5 +43,7 @@ int main()
 
     TestColor("ccl is a boy");
 
+    TestColor(num5);
+
     return 0;
 }
