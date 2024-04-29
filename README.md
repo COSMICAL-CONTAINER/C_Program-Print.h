@@ -45,6 +45,9 @@ The printArr macro allows for direct printing of arrays, with a total of three p
 * Add the function of printing arrays, which allows users to choose the printing format for every two elements in the array
 * Add unsupported format error handling
 * Add color printing code
+*
+* V1.3
+* Expanding color printing macros now supports inputting strings or variables
 ---
 # C语言 Print.h
 包括一个头文件并用C语言实现打印宏，类似于Python中的打印函数
@@ -92,6 +95,9 @@ printArr宏，能够直接打印数组，一共有三种打印方式可供选择
  * 加入打印数组功能，可以自选数组中每两个元素的打印格式
  * 加入不支持的格式错误处理
  * 加入颜色打印代码
+ *
+ * V1.3
+ * 拓展颜色打印宏，现在可以支持输入字符串或变量了
 ---
 Usage
 eg：
@@ -142,6 +148,8 @@ int main()
 
     TestColor("ccl is a boy");
 
+    TestColor(num5);
+    
     return 0;
 }
 ```
