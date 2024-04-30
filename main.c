@@ -45,5 +45,8 @@ int main()
 
     TestColor(num5);
 
+    print(num1, num2, num3, num4, num5, "123", 'y');
+    println(str1, str2, RED("c"));
+
     return 0;
 }
