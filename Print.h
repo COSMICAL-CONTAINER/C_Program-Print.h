@@ -2,8 +2,8 @@
  * @file Print.h
  * @author Cosmical Containter
  * @brief Print anything you want!
- * @version 1.3
- * @date 2024-04-06
+ * @version 1.4
+ * @date 2024-04-25
  * 
  * @copyright Copyright (c) 2024
  * 
@@ -22,6 +22,9 @@
  * 
  * V1.3
  * 增加颜色打印宏的输入格式，现在可以输入字符串或变量了
+ * 
+ * V1.4
+ * 拓展print与println宏，以前只能输出1个参数，现在可以输入最多10个参数了
  */
 
 #ifndef __Print_H__
@@ -32,7 +35,7 @@
 
 #define MAXSTRLEN 100
 
-#define print(obj) (_Generic((obj),\
+#define _print(obj) (_Generic((obj),\
     char:		        print_char,\
     short int:	        print_short,\
     int:		        print_int,\
@@ -44,7 +47,41 @@
     default:            print_error\
     )(obj))
 
-#define println(obj) {print(obj); printf("\n");}
+#define _println(obj) _print(obj), _print("\n")
+
+
+#define PrintMacroArgCount(...) _PrintMacroArgCount(__VA_ARGS__, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1)
+#define _PrintMacroArgCount(_0, _1, _2, _3, _4, _5, _6, _7, _8, _9, COUNT, ...) COUNT
+
+#define PrintConcat(A, B) _PrintConcat(A, B)
+#define _PrintConcat(A, B) A##B
+
+#define print(...) _print_(__VA_ARGS__)
+#define _print_(...) PrintConcat(_print_, PrintMacroArgCount(__VA_ARGS__))(__VA_ARGS__)
+#define _print_1(_0)                                           _print(_0)
+#define _print_2(_0, _1)                                       _print_1(_0), _print(_1)
+#define _print_3(_0, _1, _2)                                   _print_2(_0, _1), _print(_2)
+#define _print_4(_0, _1, _2, _3)                               _print_3(_0, _1, _2), _print(_3)
+#define _print_5(_0, _1, _2, _3, _4)                           _print_4(_0, _1, _2, _3), _print(_4)
+#define _print_6(_0, _1, _2, _3, _4, _5)                       _print_5(_0, _1, _2, _3, _4), _print(_5)
+#define _print_7(_0, _1, _2, _3, _4, _5, _6)                   _print_6(_0, _1, _2, _3, _4, _5), _print(_6)
+#define _print_8(_0, _1, _2, _3, _4, _5, _6, _7)               _print_7(_0, _1, _2, _3, _4, _5, _6), _print(_7)
+#define _print_9(_0, _1, _2, _3, _4, _5, _6, _7, _8)           _print_8(_0, _1, _2, _3, _4, _5, _6, _7), _print(_8)
+#define _print_10(_0, _1, _2, _3, _4, _5, _6, _7, _8, _9)      _print_9(_0, _1, _2, _3, _4, _5, _6, _7, _8), _print(_9)
+
+
+#define println(...) _println_(__VA_ARGS__)
+#define _println_(...) PrintConcat(_println_, PrintMacroArgCount(__VA_ARGS__))(__VA_ARGS__)
+#define _println_1(_0)                                           _println(_0)
+#define _println_2(_0, _1)                                       _println_1(_0), _println(_1)
+#define _println_3(_0, _1, _2)                                   _println_2(_0, _1), _println(_2)
+#define _println_4(_0, _1, _2, _3)                               _println_3(_0, _1, _2), _println(_3)
+#define _println_5(_0, _1, _2, _3, _4)                           _println_4(_0, _1, _2, _3), _println(_4)
+#define _println_6(_0, _1, _2, _3, _4, _5)                       _println_5(_0, _1, _2, _3, _4), _println(_5)
+#define _println_7(_0, _1, _2, _3, _4, _5, _6)                   _println_6(_0, _1, _2, _3, _4, _5), _println(_6)
+#define _println_8(_0, _1, _2, _3, _4, _5, _6, _7)               _println_7(_0, _1, _2, _3, _4, _5, _6), _println(_7)
+#define _println_9(_0, _1, _2, _3, _4, _5, _6, _7, _8)           _println_8(_0, _1, _2, _3, _4, _5, _6, _7), _println(_8)
+#define _println_10(_0, _1, _2, _3, _4, _5, _6, _7, _8, _9)      _println_9(_0, _1, _2, _3, _4, _5, _6, _7, _8), _println(_9)
 
 void print_char(char num)
 {
@@ -190,28 +227,28 @@ const char* str2str(const char* str)
 
 #define TestColor(obj)\
 {\
-    println(RED(obj));\
-    println(LIGHT_RED(obj));\
-    println(GREEN(obj));\
-    println(LIGHT_GREEN(obj));\
-    println(BLUE(obj));\
-    println(LIGHT_BLUE(obj));\
-    println(CYAN(obj));\
-    println(LIGHT_CYAN(obj));\
-    println(PURPLE(obj));\
-    println(LIGHT_PURPLE(obj));\
-    println(YELLOW(obj));\
-    println(LIGHT_YELLOW(obj));\
-    println(DARY_GRAY(obj));\
-    println(LIGHT_GRAY(obj));\
-    println(WHITE(obj));\
+    _println(RED(obj));\
+    _println(LIGHT_RED(obj));\
+    _println(GREEN(obj));\
+    _println(LIGHT_GREEN(obj));\
+    _println(BLUE(obj));\
+    _println(LIGHT_BLUE(obj));\
+    _println(CYAN(obj));\
+    _println(LIGHT_CYAN(obj));\
+    _println(PURPLE(obj));\
+    _println(LIGHT_PURPLE(obj));\
+    _println(YELLOW(obj));\
+    _println(LIGHT_YELLOW(obj));\
+    _println(DARY_GRAY(obj));\
+    _println(LIGHT_GRAY(obj));\
+    _println(WHITE(obj));\
 }
 #define TestColur TestColor
 
 void print_error(void *data)
 {
-    println(RED( "print error!" ));
-    println(RED( "don't have this type to print!" ));
+    _println(RED( "print error!" ));
+    _println(RED( "don't have this type to print!" ));
 }
 
 #define printArrTypeSpace 0
