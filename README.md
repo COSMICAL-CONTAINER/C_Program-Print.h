@@ -48,6 +48,10 @@ The printArr macro allows for direct printing of arrays, with a total of three p
 *
 * V1.3
 * Expanding color printing macros now supports inputting strings or variables
+*
+* V1.4
+* Expand the print and println macros. Previously, only one parameter could be output, but now you can input up to 10 parameters, achieving overloading
+
 ---
 # C语言 Print.h
 包括一个头文件并用C语言实现打印宏，类似于Python中的打印函数
@@ -98,6 +102,9 @@ printArr宏，能够直接打印数组，一共有三种打印方式可供选择
  *
  * V1.3
  * 拓展颜色打印宏，现在可以支持输入字符串或变量了
+ *
+ * V1.4
+ * 拓展print与println宏，以前只能输出1个参数，现在可以输入最多10个参数了，做到了重载
 ---
 Usage
 eg：
@@ -149,7 +156,10 @@ int main()
     TestColor("ccl is a boy");
 
     TestColor(num5);
-    
+
+    print(num1, num2, num3, num4, num5, "123", 'y');
+    println(str1, str2, RED("c"));
+
     return 0;
 }
 ```
@@ -166,9 +176,9 @@ Output：
 6
 7
 10
-1 2 3 4 5 6 7 8 9 10 
+1 2 3 4 5 6 7 8 9 10
 3
-c c l 
+c c l
 9
 print error!
 don't have this type to print!
@@ -187,6 +197,24 @@ ccl is a boy
 ccl is a boy
 ccl is a boy
 ccl is a boy
+5.000000
+5.000000
+5.000000
+5.000000
+5.000000
+5.000000
+5.000000
+5.000000
+5.000000
+5.000000
+5.000000
+5.000000
+5.000000
+5.000000
+5.000000
+1234.0000005.0000001231216
+7
+c
 ```
     
 ![test.png](https://github.com/COSMICAL-CONTAINER/C_Program-Print.h/blob/main/pic/test.png)
