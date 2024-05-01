@@ -2,51 +2,54 @@
 
 int main()
 {
-    int num1 = 1;
-    short int num2 = 2;
-    char num3 = '3';
-    float num4 = 4.0f;
-    double num5 = 5.0;
-    const char *str1 = "6";
-    char str2[] = "7";
-    
-    print(num1);
-    print(num2);
-    print(num3);
-    print(num4);
-    print(num5);
-    print(str1);
-    print(str2);
-    print("\n");
+    char char_a = '0';
+    unsigned char char_b = '1';
 
-    println(num1);
-    println(num2);
-    println(num3);
-    println(num4);
-    println(num5);
-    println(str1);
-    println(str2);
+    short int sint_c = 2;
+    int int_d = 3;
+    unsigned int uint_e = 4;
 
-    int num[10] = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
-    char ccl[10] = "ccl";
+    long long ll_f = 5l;
+    unsigned long long ull_g = 6l;
 
-    println(GET_ARR_LEN(num));
-    printlnArr(num, printArrTypeSpace);
+    float float_h = 7.7;
+    double double_i = 8.8f;
 
-    println(GET_ARR_LEN(ccl));
-    printlnArr(ccl, printArrTypeSpace);
+    const char* ccharx_j = "999";
+    char* charx_k = "1234567890";
+
+    int *intx_l = &int_d;
+    long long *llx_m = &ll_f;
+    unsigned long long *ullx_n = &ull_g;
+
+    float *o = &float_h;
+    double *p = &double_i;
+
+    println(char_a, char_b, sint_c, int_d, uint_e, ll_f, ull_g, float_h, double_i);
+    println(ccharx_j, charx_k, intx_l, llx_m, ullx_n, o, p);
+
+    int num_array[10] = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
+    char ccl_str[10] = "ccl";
+
+    println(GET_ARR_LEN(num_array));
+    printlnArr(num_array, printArrTypeSpace);
+
+    println(GET_ARR_LEN(ccl_str));
+    printlnArr(ccl_str, printArrTypeName);
 
     println(GET_ARR_LEN("987654321"));
 
-    int *p = 0;
-    print(p);
-
     TestColor("ccl is a boy");
+    
+    TestColor(char_a);
 
-    TestColor(num5);
+    print(RED(2));
+    println(YELLOW(3.3));
+    println(GREEN(3.3f));
 
-    print(num1, num2, num3, num4, num5, "123", 'y');
-    println(str1, str2, RED("c"));
+    // 注意，不能打印void类型
+    // Note that void types cannot be printed
+    // print();
 
     return 0;
 }

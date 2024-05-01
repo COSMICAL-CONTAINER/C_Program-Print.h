@@ -1,9 +1,11 @@
 /**
  * @file Print.h
  * @author Cosmical Containter
+ * @emile 1727585014@qq.com 
+ * @github https://github.com/COSMICAL-CONTAINER
  * @brief Print anything you want!
- * @version 1.4
- * @date 2024-04-25
+ * @version 1.5
+ * @date 2024-04-26
  * 
  * @copyright Copyright (c) 2024
  * 
@@ -21,10 +23,14 @@
  * 加入颜色打印代码
  * 
  * V1.3
- * 增加颜色打印宏的输入格式，现在可以输入字符串或变量了
+ * 重写颜色打印宏，现在可以输入字符串或变量了
  * 
  * V1.4
- * 拓展print与println宏，以前只能输出1个参数，现在可以输入最多10个参数了
+ * 拓展print与println宏，以前只能输出1个参数，现在可以输入最多10个参数了，做到了重载
+ * 
+ * V1.5
+ * 实现对大部分基础类型的打印
+ * 完善注释
  */
 
 #ifndef __Print_H__
@@ -33,153 +39,9 @@
 #include <stdio.h>
 #include <string.h>
 
-#define MAXSTRLEN 100
+#define PRINTMAXSTRLEN 100
 
-#define _print(obj) (_Generic((obj),\
-    char:		        print_char,\
-    short int:	        print_short,\
-    int:		        print_int,\
-    float:		        print_float,\
-    double:		        print_double,\
-    const char*:        print_cstr,\
-	char *:		        print_str,\
-    unsigned long long: print_ulonglong,\
-    default:            print_error\
-    )(obj))
-
-#define _println(obj) _print(obj), _print("\n")
-
-
-#define PrintMacroArgCount(...) _PrintMacroArgCount(__VA_ARGS__, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1)
-#define _PrintMacroArgCount(_0, _1, _2, _3, _4, _5, _6, _7, _8, _9, COUNT, ...) COUNT
-
-#define PrintConcat(A, B) _PrintConcat(A, B)
-#define _PrintConcat(A, B) A##B
-
-#define print(...) _print_(__VA_ARGS__)
-#define _print_(...) PrintConcat(_print_, PrintMacroArgCount(__VA_ARGS__))(__VA_ARGS__)
-#define _print_1(_0)                                           _print(_0)
-#define _print_2(_0, _1)                                       _print_1(_0), _print(_1)
-#define _print_3(_0, _1, _2)                                   _print_2(_0, _1), _print(_2)
-#define _print_4(_0, _1, _2, _3)                               _print_3(_0, _1, _2), _print(_3)
-#define _print_5(_0, _1, _2, _3, _4)                           _print_4(_0, _1, _2, _3), _print(_4)
-#define _print_6(_0, _1, _2, _3, _4, _5)                       _print_5(_0, _1, _2, _3, _4), _print(_5)
-#define _print_7(_0, _1, _2, _3, _4, _5, _6)                   _print_6(_0, _1, _2, _3, _4, _5), _print(_6)
-#define _print_8(_0, _1, _2, _3, _4, _5, _6, _7)               _print_7(_0, _1, _2, _3, _4, _5, _6), _print(_7)
-#define _print_9(_0, _1, _2, _3, _4, _5, _6, _7, _8)           _print_8(_0, _1, _2, _3, _4, _5, _6, _7), _print(_8)
-#define _print_10(_0, _1, _2, _3, _4, _5, _6, _7, _8, _9)      _print_9(_0, _1, _2, _3, _4, _5, _6, _7, _8), _print(_9)
-
-
-#define println(...) _println_(__VA_ARGS__)
-#define _println_(...) PrintConcat(_println_, PrintMacroArgCount(__VA_ARGS__))(__VA_ARGS__)
-#define _println_1(_0)                                           _println(_0)
-#define _println_2(_0, _1)                                       _println_1(_0), _println(_1)
-#define _println_3(_0, _1, _2)                                   _println_2(_0, _1), _println(_2)
-#define _println_4(_0, _1, _2, _3)                               _println_3(_0, _1, _2), _println(_3)
-#define _println_5(_0, _1, _2, _3, _4)                           _println_4(_0, _1, _2, _3), _println(_4)
-#define _println_6(_0, _1, _2, _3, _4, _5)                       _println_5(_0, _1, _2, _3, _4), _println(_5)
-#define _println_7(_0, _1, _2, _3, _4, _5, _6)                   _println_6(_0, _1, _2, _3, _4, _5), _println(_6)
-#define _println_8(_0, _1, _2, _3, _4, _5, _6, _7)               _println_7(_0, _1, _2, _3, _4, _5, _6), _println(_7)
-#define _println_9(_0, _1, _2, _3, _4, _5, _6, _7, _8)           _println_8(_0, _1, _2, _3, _4, _5, _6, _7), _println(_8)
-#define _println_10(_0, _1, _2, _3, _4, _5, _6, _7, _8, _9)      _println_9(_0, _1, _2, _3, _4, _5, _6, _7, _8), _println(_9)
-
-void print_char(char num)
-{
-    printf("%c", num);
-}
-
-void print_short(short int num)
-{
-    printf("%hd", num);
-}
-
-void print_int(int num)
-{
-    printf("%d", num);
-}
-
-void print_ulonglong(unsigned long long num)
-{
-    printf("%llu", num);
-}
-
-void print_float(float num)
-{
-    printf("%f", num);
-}
-
-void print_double(double num)
-{
-    printf("%lf", num);
-}
-
-void print_cstr(const char *str)
-{
-    printf("%s", str);
-}
-
-void print_str(char *str)
-{
-    printf("%s", str);
-}
-
-// 下面是处理各种类型转字符串
-const char* str_comb(const char *str1, const char *str2)
-{
-    static char str[MAXSTRLEN];
-    strcpy(str, str1);
-    strcat(str, str2);
-    return str;
-}
-
-const char* char2str(char ch)
-{
-    static char str[2];
-    str[0] = ch;
-    str[1] = '\0';
-    return str;
-}
-
-const char* short2str(short num)
-{
-    static char str[6];
-    sprintf(str, "%hd", num);
-    return str;
-}
-
-const char* int2str(int num)
-{
-    static char str[11];
-    sprintf(str, "%d", num);
-    return str;
-}
-
-const char* float2str(float num)
-{
-    static char str[11];
-    sprintf(str, "%f", num);
-    return str;
-}
-
-const char* double2str(double num)
-{
-    static char str[21];
-    sprintf(str, "%lf", num);
-    return str;
-}
-
-const char* ulonglong2str(unsigned long long num)
-{
-    static char str[21];
-    sprintf(str, "%llu", num);
-    return str;
-}
-
-const char* str2str(const char* str)
-{
-    return str;
-}
-
+// 颜色宏代码
 // #define NONE(str)          str"\033[m"
 // #define RED(str)           "\033[0;32;31m"NONE(str)
 // #define LIGHT_RED(str)     "\033[1;31m"NONE(str)
@@ -197,6 +59,8 @@ const char* str2str(const char* str)
 // #define LIGHT_GRAY(str)    "\033[0;37m"NONE(str)
 // #define WHITE(str)         "\033[1;37m"NONE(str)
 
+// 为了能够实现兼容字符串和变量的颜色打印，只能这样操作
+// RED(a) 与 RED("1") 兼容
 #define TOSTR(obj) (_Generic((obj),\
     char:		        char2str,\
     short int:	        short2str,\
@@ -225,25 +89,221 @@ const char* str2str(const char* str)
 #define LIGHT_GRAY(obj)    (str_comb(str_comb("\033[0;37m"   ,TOSTR(obj)),"\033[m"))
 #define WHITE(obj)         (str_comb(str_comb("\033[1;37m"   ,TOSTR(obj)),"\033[m"))
 
+// 这是字符串合成函数
+const char* str_comb(const char *str1, const char *str2)
+{
+    static char str[PRINTMAXSTRLEN];
+    strcpy(str, str1);
+    strcat(str, str2);
+    return str;
+}
+
+// 下面是处理各种类型转字符串的函数
+const char* char2str(char ch)
+{
+    static char str[2];
+    str[0] = ch;
+    str[1] = '\0';
+    return str;
+}
+
+const char* short2str(short num)
+{
+    // short：2字节 -32,768 到 32,767
+    static char str[7];
+    sprintf(str, "%hd", num);
+    return str;
+}
+
+const char* int2str(int num)
+{
+    // int：2~4字节 -32,768 到 32,767 或 -2,147,483,648 到 2,147,483,647
+    static char str[12];
+    sprintf(str, "%d", num);
+    return str;
+}
+
+const char* float2str(float num)
+{
+    // float：4字节 1.2E-38 到 3.4E+38
+    static char str[12];
+    sprintf(str, "%f", num);
+    return str;
+}
+
+const char* double2str(double num)
+{
+    // double：8字节 2.3E-308 到 1.7E+308
+    static char str[21];
+    sprintf(str, "%lf", num);
+    return str;
+}
+
+const char* ulonglong2str(unsigned long long num)
+{
+    // unsigned long long：8字节 0 到 18,446,744,073,709,551,615
+    static char str[21];
+    sprintf(str, "%llu", num);
+    return str;
+}
+
+const char* str2str(const char* str)
+{
+    // 直接返回即可
+    return str;
+}
+
+// 颜色宏代码测试
 #define TestColor(obj)\
 {\
-    _println(RED(obj));\
-    _println(LIGHT_RED(obj));\
-    _println(GREEN(obj));\
-    _println(LIGHT_GREEN(obj));\
-    _println(BLUE(obj));\
-    _println(LIGHT_BLUE(obj));\
-    _println(CYAN(obj));\
-    _println(LIGHT_CYAN(obj));\
-    _println(PURPLE(obj));\
-    _println(LIGHT_PURPLE(obj));\
-    _println(YELLOW(obj));\
-    _println(LIGHT_YELLOW(obj));\
-    _println(DARY_GRAY(obj));\
-    _println(LIGHT_GRAY(obj));\
-    _println(WHITE(obj));\
+    println(RED(obj));\
+    println(LIGHT_RED(obj));\
+    println(GREEN(obj));\
+    println(LIGHT_GREEN(obj));\
+    println(BLUE(obj));\
+    println(LIGHT_BLUE(obj));\
+    println(CYAN(obj));\
+    println(LIGHT_CYAN(obj));\
+    println(PURPLE(obj));\
+    println(LIGHT_PURPLE(obj));\
+    println(YELLOW(obj));\
+    println(LIGHT_YELLOW(obj));\
+    println(DARY_GRAY(obj));\
+    println(LIGHT_GRAY(obj));\
+    println(WHITE(obj));\
 }
+
+// 兼容Color两种写法
 #define TestColur TestColor
+
+// 原始打印宏，根据obj类型调用不同的打印函数
+#define _print(obj) (_Generic((obj),    \
+    char:		        print_char,     \
+    unsigned char:		print_uchar,    \
+                                        \
+    short int:	        print_short,    \
+    int:		        print_int,      \
+    unsigned int:		print_uint,     \
+                                        \
+    long long:          print_longlong, \
+    unsigned long long: print_ulonglong,\
+                                        \
+    float:		        print_float,    \
+    double:		        print_double,   \
+                                        \
+    const char*:        print_cstr,     \
+	char*:		        print_str,      \
+                                        \
+    int*:               print_p,        \
+    long long*:         print_p,        \
+    unsigned long long*:print_p,        \
+    float*:             print_p,        \
+    double*:            print_p,        \
+                                        \
+    default:            print_error     \
+    )(obj))
+
+// 原始打印换行宏，直接调用打印函数然后打印换行符
+#define _println(obj) _print(obj), _print("\n")
+
+// 获取参数个数，最多支持10个参数
+#define PrintMacroArgCount(...) _PrintMacroArgCount(__VA_ARGS__, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1)
+#define _PrintMacroArgCount(_0, _1, _2, _3, _4, _5, _6, _7, _8, _9, COUNT, ...) COUNT
+
+// 宏黏贴
+#define PrintConcat(A, B) _PrintConcat(A, B)
+#define _PrintConcat(A, B) A##B
+
+// 打印宏的宏展开，最多支持10个参数
+// 原理: print(a, b, c); 展开后变成 _print(a), _print(b), _print(c);
+#define print(...) _print_(__VA_ARGS__)
+#define _print_(...) PrintConcat(_print_, PrintMacroArgCount(__VA_ARGS__))(__VA_ARGS__)
+#define _print_1(_0)                                           _print(_0)
+#define _print_2(_0, _1)                                       _print_1(_0), _print(_1)
+#define _print_3(_0, _1, _2)                                   _print_2(_0, _1), _print(_2)
+#define _print_4(_0, _1, _2, _3)                               _print_3(_0, _1, _2), _print(_3)
+#define _print_5(_0, _1, _2, _3, _4)                           _print_4(_0, _1, _2, _3), _print(_4)
+#define _print_6(_0, _1, _2, _3, _4, _5)                       _print_5(_0, _1, _2, _3, _4), _print(_5)
+#define _print_7(_0, _1, _2, _3, _4, _5, _6)                   _print_6(_0, _1, _2, _3, _4, _5), _print(_6)
+#define _print_8(_0, _1, _2, _3, _4, _5, _6, _7)               _print_7(_0, _1, _2, _3, _4, _5, _6), _print(_7)
+#define _print_9(_0, _1, _2, _3, _4, _5, _6, _7, _8)           _print_8(_0, _1, _2, _3, _4, _5, _6, _7), _print(_8)
+#define _print_10(_0, _1, _2, _3, _4, _5, _6, _7, _8, _9)      _print_9(_0, _1, _2, _3, _4, _5, _6, _7, _8), _print(_9)
+
+// 打印并换行宏的宏展开，最多支持10个参数
+// 原理: println(a, b, c); 展开后变成 _println(a), _println(b), _println(c);
+#define println(...) _println_(__VA_ARGS__)
+#define _println_(...) PrintConcat(_println_, PrintMacroArgCount(__VA_ARGS__))(__VA_ARGS__)
+#define _println_1(_0)                                           _println(_0)
+#define _println_2(_0, _1)                                       _println_1(_0), _println(_1)
+#define _println_3(_0, _1, _2)                                   _println_2(_0, _1), _println(_2)
+#define _println_4(_0, _1, _2, _3)                               _println_3(_0, _1, _2), _println(_3)
+#define _println_5(_0, _1, _2, _3, _4)                           _println_4(_0, _1, _2, _3), _println(_4)
+#define _println_6(_0, _1, _2, _3, _4, _5)                       _println_5(_0, _1, _2, _3, _4), _println(_5)
+#define _println_7(_0, _1, _2, _3, _4, _5, _6)                   _println_6(_0, _1, _2, _3, _4, _5), _println(_6)
+#define _println_8(_0, _1, _2, _3, _4, _5, _6, _7)               _println_7(_0, _1, _2, _3, _4, _5, _6), _println(_7)
+#define _println_9(_0, _1, _2, _3, _4, _5, _6, _7, _8)           _println_8(_0, _1, _2, _3, _4, _5, _6, _7), _println(_8)
+#define _println_10(_0, _1, _2, _3, _4, _5, _6, _7, _8, _9)      _println_9(_0, _1, _2, _3, _4, _5, _6, _7, _8), _println(_9)
+
+// 下面是打印各种类型的原始打印函数
+void print_char(char num)
+{
+    printf("%c", num);
+}
+
+void print_uchar(unsigned char num)
+{
+    printf("%c", num);
+}
+
+void print_short(short int num)
+{
+    printf("%hd", num);
+}
+
+void print_int(int num)
+{
+    printf("%d", num);
+}
+
+void print_uint(unsigned int num)
+{
+    printf("%u", num);
+}
+
+void print_longlong(long long num)
+{
+    printf("%lld", num);
+}
+
+void print_ulonglong(unsigned long long num)
+{
+    printf("%llu", num);
+}
+
+void print_float(float num)
+{
+    printf("%f", num);
+}
+
+void print_double(double num)
+{
+    printf("%lf", num);
+}
+
+void print_cstr(const char* str)
+{
+    printf("%s", str);
+}
+
+void print_str(char* str)
+{
+    printf("%s", str);
+}
+
+void print_p(void* obj)
+{
+    printf("%p", obj);
+}
 
 void print_error(void *data)
 {
@@ -251,16 +311,25 @@ void print_error(void *data)
     _println(RED( "don't have this type to print!" ));
 }
 
+
+// 打印数组宏
+
+// 打印数组宏控制打印方式
+// 0: 数组元素之间用空格隔开
 #define printArrTypeSpace 0
+// 1: 数组元素之间用换行符隔开
 #define printArrTypeln    1
+// 2: 打印数组元素和元素下标
 #define printArrTypeName  2
 
+// 获取数组长度宏
 #define GET_ARR_LEN(arrobj) \
 	(_Generic((arrobj),\
     char *:		  strlen((const char *)arrobj),\
     default:      (sizeof(arrobj) / sizeof(arrobj[0]))\
     ))
 
+// 打印数组宏， 其中type是数组的元素之间按照什么方式打印
 #define printArr(ArrName, type) {     \
     for (int i = 0; i < GET_ARR_LEN(ArrName); i++)    \
     {                                       \
