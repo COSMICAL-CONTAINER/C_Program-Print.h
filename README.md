@@ -51,6 +51,10 @@ The printArr macro allows for direct printing of arrays, with a total of three p
 *
 * V1.4
 * Expand the print and println macros. Previously, only one parameter could be output, but now you can input up to 10 parameters, achieving overloading
+* 
+* V1.5
+* Implement printing for most basic types
+* Improve annotations
 
 ---
 # C语言 Print.h
@@ -105,6 +109,10 @@ printArr宏，能够直接打印数组，一共有三种打印方式可供选择
  *
  * V1.4
  * 拓展print与println宏，以前只能输出1个参数，现在可以输入最多10个参数了，做到了重载
+ *
+ * V1.5
+ * 实现对大部分基础类型的打印
+ * 完善注释
 ---
 Usage
 eg：
@@ -114,51 +122,54 @@ eg：
 
 int main()
 {
-    int num1 = 1;
-    short int num2 = 2;
-    char num3 = '3';
-    float num4 = 4.0f;
-    double num5 = 5.0;
-    const char *str1 = "6";
-    char str2[] = "7";
-    
-    print(num1);
-    print(num2);
-    print(num3);
-    print(num4);
-    print(num5);
-    print(str1);
-    print(str2);
-    print("\n");
+    char char_a = '0';
+    unsigned char char_b = '1';
 
-    println(num1);
-    println(num2);
-    println(num3);
-    println(num4);
-    println(num5);
-    println(str1);
-    println(str2);
+    short int sint_c = 2;
+    int int_d = 3;
+    unsigned int uint_e = 4;
 
-    int num[10] = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
-    char ccl[10] = "ccl";
+    long long ll_f = 5l;
+    unsigned long long ull_g = 6l;
 
-    println(GET_ARR_LEN(num));
-    printlnArr(num, printArrTypeSpace);
+    float float_h = 7.7;
+    double double_i = 8.8f;
 
-    println(GET_ARR_LEN(ccl));
-    printlnArr(ccl, printArrTypeSpace);
+    const char* ccharx_j = "999";
+    char* charx_k = "1234567890";
+
+    int *intx_l = &int_d;
+    long long *llx_m = &ll_f;
+    unsigned long long *ullx_n = &ull_g;
+
+    float *o = &float_h;
+    double *p = &double_i;
+
+    println(char_a, char_b, sint_c, int_d, uint_e, ll_f, ull_g, float_h, double_i);
+    println(ccharx_j, charx_k, intx_l, llx_m, ullx_n, o, p);
+
+    int num_array[10] = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
+    char ccl_str[10] = "ccl";
+
+    println(GET_ARR_LEN(num_array));
+    printlnArr(num_array, printArrTypeSpace);
+
+    println(GET_ARR_LEN(ccl_str));
+    printlnArr(ccl_str, printArrTypeName);
 
     println(GET_ARR_LEN("987654321"));
 
-    int *p = 0;
-    print(p);
-
     TestColor("ccl is a boy");
+    
+    TestColor(char_a);
 
-    TestColor(num5);
+    print(RED(2));
+    println(YELLOW(3.3));
+    println(GREEN(3.3f));
 
-    print(num1, num2, num3, num4, num5, "123", 'y');
-    println(str1, str2, RED("c"));
+    // 注意，不能打印void类型
+    // Note that void types cannot be printed
+    // print();
 
     return 0;
 }
@@ -167,21 +178,30 @@ int main()
 Output：
 
 ```c
-1234.0000005.00000067
+0
 1
 2
 3
-4.000000
-5.000000
+4
+5
 6
-7
+7.700000
+8.800000
+999
+1234567890
+000000000061FDC4
+000000000061FDB8
+000000000061FDB0
+000000000061FDAC
+000000000061FDA0
 10
 1 2 3 4 5 6 7 8 9 10
 3
-c c l
+ccl_str[0] = c
+ccl_str[1] = c
+ccl_str[2] = l
+
 9
-print error!
-don't have this type to print!
 ccl is a boy
 ccl is a boy
 ccl is a boy
@@ -197,24 +217,23 @@ ccl is a boy
 ccl is a boy
 ccl is a boy
 ccl is a boy
-5.000000
-5.000000
-5.000000
-5.000000
-5.000000
-5.000000
-5.000000
-5.000000
-5.000000
-5.000000
-5.000000
-5.000000
-5.000000
-5.000000
-5.000000
-1234.0000005.0000001231216
-7
-c
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+23.300000
+3.300000
 ```
     
 ![test.png](https://github.com/COSMICAL-CONTAINER/C_Program-Print.h/blob/main/pic/test.png)
