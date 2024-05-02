@@ -240,3 +240,4 @@ ccl is a boy
 
 You can see that we pass in different types of variables for the print macro to print, and ultimately all can output
 你可以看到，我们为打印宏传递了不同类型的变量，最终所有变量都可以输出
+
