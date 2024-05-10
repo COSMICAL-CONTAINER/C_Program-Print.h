@@ -14,29 +14,34 @@
  * 完成基础功能，实现对基础类型char、short int、int、float、double、const char *、char *的打印
  * 
  * V1.1
- * 尝试不调用函数直接展开-失败
+ * 修复bug
  * 
  * V1.2
  * 加入unsigned long long 的打印格式
- * 加入打印函数功能，可以自选打印格式
+ * 加入打印数组功能，可以自选数组中每两个元素的打印格式
  * 加入不支持的格式错误处理
  * 加入颜色打印代码
- * 
+ *
  * V1.3
- * 重写颜色打印宏，现在可以输入字符串或变量了
- * 
+ * 拓展颜色打印宏，现在可以支持输入字符串或变量了
+ *
  * V1.4
  * 拓展print与println宏，以前只能输出1个参数，现在可以输入最多10个参数了，做到了重载
- * 
+ *
  * V1.5
  * 实现对大部分基础类型的打印
  * 完善注释
+ * 
+ * V1.6
+ * 加入debug宏，可以打印变量名以及变量的值
+ * 加入WARN_IF、ERR_IF、ERR_EXIT_IF宏，可以根据条件来测试打印
  */
 
 #ifndef __Print_H__
 #define __Print_H__
 
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 
 #define PRINTMAXSTRLEN 100
@@ -311,6 +316,33 @@ void print_error(void *data)
     _println(RED( "don't have this type to print!" ));
 }
 
+// debug宏
+#define debug_valuename_to_str(value) #value
+#define debug(obj) print(LIGHT_GREEN("debug: "), debug_valuename_to_str(obj)" = ", obj, "\n")
+
+#define WARN_IF(EXP)  \
+do                    \
+{                     \
+    if (EXP)          \
+        print(YELLOW("warning: "), #EXP "\n"); \
+}while(0)
+
+#define ERR_IF(EXP)   \
+do                    \
+{                     \
+    if (EXP)          \
+        print(RED("error: "), #EXP "\n"); \
+}while(0)
+
+#define ERR_EXIT_IF(EXP)\
+do                    \
+{                     \
+    if (EXP)          \
+    {                 \
+        print(RED("error: "), #EXP "\n"); \
+        exit(-1);\
+    }\
+}while(0)
 
 // 打印数组宏
 

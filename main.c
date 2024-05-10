@@ -47,9 +47,16 @@ int main()
     println(YELLOW(3.3));
     println(GREEN(3.3f));
 
-    // 注意，不能打印void类型
     // Note that void types cannot be printed
+    // 注意，不能打印void
     // print();
+
+    debug(char_a);
+
+    WARN_IF(char_a == '0');
+    ERR_IF(2 == 2);
+    ERR_EXIT_IF(3 == 3);
+    WARN_IF(char_a == 1);
 
     return 0;
 }
