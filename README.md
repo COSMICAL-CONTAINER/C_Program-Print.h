@@ -55,6 +55,10 @@ The printArr macro allows for direct printing of arrays, with a total of three p
 * V1.5
 * Implement printing for most basic types
 * Improve annotations
+*
+* V1.6
+* Add debug macros to print variable names and values
+* Add the WARN_IF, ERR-IF, and ERR-EXIT.IF macros to test printing based on conditions
 
 ---
 # C语言 Print.h
@@ -113,6 +117,10 @@ printArr宏，能够直接打印数组，一共有三种打印方式可供选择
  * V1.5
  * 实现对大部分基础类型的打印
  * 完善注释
+ *
+ * V1.6
+ * 加入debug宏，可以打印变量名以及变量的值
+ * 加入WARN_IF、ERR_IF、ERR_EXIT_IF宏，可以根据条件来测试打印
 ---
 Usage
 eg：
@@ -167,9 +175,16 @@ int main()
     println(YELLOW(3.3));
     println(GREEN(3.3f));
 
-    // 注意，不能打印void类型
     // Note that void types cannot be printed
+    // 注意，不能打印void
     // print();
+
+    debug(char_a);
+
+    WARN_IF(char_a == '0');
+    ERR_IF(2 == 2);
+    ERR_EXIT_IF(3 == 3);
+    WARN_IF(char_a == 1);
 
     return 0;
 }
@@ -234,10 +249,13 @@ ccl is a boy
 0
 23.300000
 3.300000
+debug: char_a = 0
+warning: char_a == '0'
+error: 2 == 2
+error: 3 == 3
 ```
     
 ![test.png](https://github.com/COSMICAL-CONTAINER/C_Program-Print.h/blob/main/pic/test.png)
 
 You can see that we pass in different types of variables for the print macro to print, and ultimately all can output
 你可以看到，我们为打印宏传递了不同类型的变量，最终所有变量都可以输出
-
