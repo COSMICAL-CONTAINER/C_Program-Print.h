@@ -6,7 +6,6 @@ The project includes
 A header file Print. h
 A test file main. c
 
-
 ## macro:
 The print macro, using C11's _Generic (generic macro) to determine the type of input objects and call different printf print functions
 
