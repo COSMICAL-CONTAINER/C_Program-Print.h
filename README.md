@@ -59,6 +59,10 @@ The printArr macro allows for direct printing of arrays, with a total of three p
 * V1.6
 * Add debug macros to print variable names and values
 * Add the WARN_IF, ERR-IF, and ERR-EXIT.IF macros to test printing based on conditions
+*
+* V1.7
+* Fix the issue of function conflicts when multiple files contain Print. h at the same time
+* Add font macros to highlight, italic, underline, blink, and reverse text
 
 ---
 # C语言 Print.h
