@@ -4,8 +4,8 @@
  * @emile 1727585014@qq.com 
  * @github https://github.com/COSMICAL-CONTAINER
  * @brief Print anything you want!
- * @version 1.5
- * @date 2024-04-26
+ * @version 1.7
+ * @date 2024-07-15
  * 
  * @copyright Copyright (c) 2024
  * 
@@ -35,6 +35,10 @@
  * V1.6
  * 加入debug宏，可以打印变量名以及变量的值
  * 加入WARN_IF、ERR_IF、ERR_EXIT_IF宏，可以根据条件来测试打印
+ * 
+ * V1.7
+ * 修复多个文件同时包含Print.h时，函数冲突的问题
+ * 加入字体宏，可以高亮、斜体、下划线、闪烁、反显文字
  */
 
 #ifndef __Print_H__
@@ -95,7 +99,7 @@
 #define WHITE(obj)         (str_comb(str_comb("\033[1;37m"   ,TOSTR(obj)),"\033[m"))
 
 // 这是字符串合成函数
-const char* str_comb(const char *str1, const char *str2)
+static inline const char* str_comb(const char *str1, const char *str2)
 {
     static char str[PRINTMAXSTRLEN];
     strcpy(str, str1);
@@ -104,7 +108,7 @@ const char* str_comb(const char *str1, const char *str2)
 }
 
 // 下面是处理各种类型转字符串的函数
-const char* char2str(char ch)
+static inline const char* char2str(char ch)
 {
     static char str[2];
     str[0] = ch;
@@ -112,7 +116,7 @@ const char* char2str(char ch)
     return str;
 }
 
-const char* short2str(short num)
+static inline const char* short2str(short num)
 {
     // short：2字节 -32,768 到 32,767
     static char str[7];
@@ -120,7 +124,7 @@ const char* short2str(short num)
     return str;
 }
 
-const char* int2str(int num)
+static inline const char* int2str(int num)
 {
     // int：2~4字节 -32,768 到 32,767 或 -2,147,483,648 到 2,147,483,647
     static char str[12];
@@ -128,7 +132,7 @@ const char* int2str(int num)
     return str;
 }
 
-const char* float2str(float num)
+static inline const char* float2str(float num)
 {
     // float：4字节 1.2E-38 到 3.4E+38
     static char str[12];
@@ -136,7 +140,7 @@ const char* float2str(float num)
     return str;
 }
 
-const char* double2str(double num)
+static inline const char* double2str(double num)
 {
     // double：8字节 2.3E-308 到 1.7E+308
     static char str[21];
@@ -144,7 +148,7 @@ const char* double2str(double num)
     return str;
 }
 
-const char* ulonglong2str(unsigned long long num)
+static inline const char* ulonglong2str(unsigned long long num)
 {
     // unsigned long long：8字节 0 到 18,446,744,073,709,551,615
     static char str[21];
@@ -152,7 +156,7 @@ const char* ulonglong2str(unsigned long long num)
     return str;
 }
 
-const char* str2str(const char* str)
+static inline const char* str2str(const char* str)
 {
     // 直接返回即可
     return str;
@@ -180,6 +184,19 @@ const char* str2str(const char* str)
 
 // 兼容Color两种写法
 #define TestColur TestColor
+
+// 原始字体宏
+#define NONE(str)          str"\033[m"
+// 高亮文字
+#define HIGHTLIGHT(str)    "\033[1m"NONE(str)
+// 斜体文字
+#define ITALIC(str)        "\033[3m"NONE(str)
+// 下划线文字
+#define _(str)             "\033[4m"NONE(str)
+// 闪烁文字
+#define FLASGING(str)      "\033[5m"NONE(str)
+// 反显文字 - 交换前景色和背景色
+#define Reversedisplay(str)      "\033[7m"NONE(str)
 
 // 原始打印宏，根据obj类型调用不同的打印函数
 #define _print(obj) (_Generic((obj),    \
@@ -250,67 +267,67 @@ const char* str2str(const char* str)
 #define _println_10(_0, _1, _2, _3, _4, _5, _6, _7, _8, _9)      _println_9(_0, _1, _2, _3, _4, _5, _6, _7, _8), _println(_9)
 
 // 下面是打印各种类型的原始打印函数
-void print_char(char num)
+static inline void print_char(char num)
 {
     printf("%c", num);
 }
 
-void print_uchar(unsigned char num)
+static inline void print_uchar(unsigned char num)
 {
     printf("%c", num);
 }
 
-void print_short(short int num)
+static inline void print_short(short int num)
 {
     printf("%hd", num);
 }
 
-void print_int(int num)
+static inline void print_int(int num)
 {
     printf("%d", num);
 }
 
-void print_uint(unsigned int num)
+static inline void print_uint(unsigned int num)
 {
     printf("%u", num);
 }
 
-void print_longlong(long long num)
+static inline void print_longlong(long long num)
 {
     printf("%lld", num);
 }
 
-void print_ulonglong(unsigned long long num)
+static inline void print_ulonglong(unsigned long long num)
 {
     printf("%llu", num);
 }
 
-void print_float(float num)
+static inline void print_float(float num)
 {
     printf("%f", num);
 }
 
-void print_double(double num)
+static inline void print_double(double num)
 {
     printf("%lf", num);
 }
 
-void print_cstr(const char* str)
+static inline void print_cstr(const char* str)
 {
     printf("%s", str);
 }
 
-void print_str(char* str)
+static inline void print_str(char* str)
 {
     printf("%s", str);
 }
 
-void print_p(void* obj)
+static inline void print_p(void* obj)
 {
     printf("%p", obj);
 }
 
-void print_error(void *data)
+static inline void print_error(void *data)
 {
     _println(RED( "print error!" ));
     _println(RED( "don't have this type to print!" ));
