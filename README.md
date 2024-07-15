@@ -121,6 +121,10 @@ printArr宏，能够直接打印数组，一共有三种打印方式可供选择
  * V1.6
  * 加入debug宏，可以打印变量名以及变量的值
  * 加入WARN_IF、ERR_IF、ERR_EXIT_IF宏，可以根据条件来测试打印
+ *
+ * V1.7
+ * 修复多个文件同时包含Print.h时，函数冲突的问题
+ * 加入字体宏，可以高亮、斜体、下划线、闪烁、反显文字
 ---
 Usage
 eg：
@@ -178,6 +182,12 @@ int main()
     // Note that void types cannot be printed
     // 注意，不能打印void
     // print();
+
+    println(HIGHTLIGHT("Look at me"));
+    println(ITALIC("Look at me"));
+    println(_("Look at me"));
+    println(FLASGING("Look at me"));
+    println(Reversedisplay("Look at me"));
 
     debug(char_a);
 
@@ -249,6 +259,11 @@ ccl is a boy
 0
 23.300000
 3.300000
+Look at me
+Look at me
+Look at me
+Look at me
+Look at me
 debug: char_a = 0
 warning: char_a == '0'
 error: 2 == 2
