@@ -1,5 +1,4 @@
 #include "Print.h"
-
 int main()
 {
     char char_a = '0';
@@ -50,6 +49,12 @@ int main()
     // Note that void types cannot be printed
     // 注意，不能打印void
     // print();
+
+    println(HIGHTLIGHT("Look at me"));
+    println(ITALIC("Look at me"));
+    println(_("Look at me"));
+    println(FLASGING("Look at me"));
+    println(Reversedisplay("Look at me"));
 
     debug(char_a);
 
