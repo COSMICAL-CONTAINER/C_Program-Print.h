@@ -34,7 +34,6 @@ Get_ARR_LEN macro, capable of obtaining the length of an array
 
 The printArr macro allows for direct printing of arrays, with a total of three printing methods to choose from
 
-
 * V1.0
 * Complete basic functions and print basic types char, short int, int, float, double, const char *, char *
 *
@@ -64,6 +63,9 @@ The printArr macro allows for direct printing of arrays, with a total of three p
 * V1.7
 * Fix the issue of function conflicts when multiple files contain Print. h at the same time
 * Add font macros to highlight, italic, underline, blink, and reverse text
+* V1.8
+* Fixed errors in font macro highlighting, italics, underscores, blinking, and reverse text printing variables
+* Rewrite the PrintMacroArgCount macro, now it can obtain the situation without parameters, implement print() and println(), and print blank or line breaks by default without passing parameters
 
 ---
 # C语言 Print.h
@@ -96,6 +98,12 @@ WHITE
 这些颜色宏能直接作用于字符串，使得字符串在屏幕上打印出是有颜色的
 比如我们使用print(RED("test"))就会在屏幕上输出红色的文字
 使用print(LIGHT_RED("test"))就会在屏幕上输出亮红色的文字
+
+各种字体宏:
+ITALIC(str)         斜体文字 
+_(str)              下划线文字    
+FLASGING(str)       闪烁文字
+Reversedisplay(str) 反显文字 - 交换前景色和背景色
 
 GET_ARR_LEN宏，能够获取数组的长度
 
@@ -130,6 +138,10 @@ printArr宏，能够直接打印数组，一共有三种打印方式可供选择
  * V1.7
  * 修复多个文件同时包含Print.h时，函数冲突的问题
  * 加入字体宏，可以高亮、斜体、下划线、闪烁、反显文字
+ *
+ * V1.8
+ * 修复字体宏高亮、斜体、下划线、闪烁、反显文字打印变量时报错
+ * 重写PrintMacroArgCount宏，现在可以获取没有参数的情况了，实现print()、println(),不传递参数默认打印空白或换行
 ---
 Usage
 eg：
@@ -181,12 +193,10 @@ int main()
     TestColor(char_a);
 
     print(RED(2));
+    print();
     println(YELLOW(3.3));
+    println();
     println(GREEN(3.3f));
-
-    // Note that void types cannot be printed
-    // 注意，不能打印void
-    // print();
 
     println(HIGHTLIGHT("Look at me"));
     println(ITALIC("Look at me"));
@@ -198,11 +208,12 @@ int main()
 
     WARN_IF(char_a == '0');
     ERR_IF(2 == 2);
-    ERR_EXIT_IF(3 == 3);
-    WARN_IF(char_a == 1);
+    ERR_EXIT_IF(3 == 2);
+    WARN_IF(char_a == 0);
 
     return 0;
 }
+
 ```
     
 Output：
@@ -263,6 +274,7 @@ ccl is a boy
 0
 0
 23.300000
+
 3.300000
 Look at me
 Look at me
@@ -272,7 +284,6 @@ Look at me
 debug: char_a = 0
 warning: char_a == '0'
 error: 2 == 2
-error: 3 == 3
 ```
     
 ![test.png](https://github.com/COSMICAL-CONTAINER/C_Program-Print.h/blob/main/pic/test.png)
