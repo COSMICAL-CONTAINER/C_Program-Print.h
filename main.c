@@ -43,12 +43,10 @@ int main()
     TestColor(char_a);
 
     print(RED(2));
+    print();
     println(YELLOW(3.3));
+    println();
     println(GREEN(3.3f));
-
-    // Note that void types cannot be printed
-    // 注意，不能打印void
-    // print();
 
     println(HIGHTLIGHT("Look at me"));
     println(ITALIC("Look at me"));
@@ -60,8 +58,8 @@ int main()
 
     WARN_IF(char_a == '0');
     ERR_IF(2 == 2);
-    ERR_EXIT_IF(3 == 3);
-    WARN_IF(char_a == 1);
+    ERR_EXIT_IF(3 == 2);
+    WARN_IF(char_a == 0);
 
     return 0;
 }

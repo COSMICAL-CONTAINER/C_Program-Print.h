@@ -68,6 +68,19 @@
 // #define LIGHT_GRAY(str)    "\033[0;37m"NONE(str)
 // #define WHITE(str)         "\033[1;37m"NONE(str)
 
+// // 原始字体宏
+// #define NONE(str)          str"\033[m"
+// // 高亮文字
+// #define HIGHTLIGHT(str)    "\033[1m"NONE(str)
+// // 斜体文字
+// #define ITALIC(str)        "\033[3m"NONE(str)
+// // 下划线文字
+// #define _(str)             "\033[4m"NONE(str)
+// // 闪烁文字
+// #define FLASGING(str)      "\033[5m"NONE(str)
+// // 反显文字 - 交换前景色和背景色
+// #define Reversedisplay(str)      "\033[7m"NONE(str)
+
 // 为了能够实现兼容字符串和变量的颜色打印，只能这样操作
 // RED(a) 与 RED("1") 兼容
 #define TOSTR(obj) (_Generic((obj),\
@@ -79,7 +92,7 @@
     const char*:        str2str,\
 	char *:		        str2str,\
     unsigned long long: ulonglong2str,\
-    default:            print_error\
+    default:            print_void_or_error\
     )(obj))
 
 #define RED(obj)           (str_comb(str_comb("\033[0;32;31m",TOSTR(obj)),"\033[m"))
@@ -97,6 +110,15 @@
 #define LIGHT_YELLOW(obj)  (str_comb(str_comb("\033[1;33m"   ,TOSTR(obj)),"\033[m"))
 #define LIGHT_GRAY(obj)    (str_comb(str_comb("\033[0;37m"   ,TOSTR(obj)),"\033[m"))
 #define WHITE(obj)         (str_comb(str_comb("\033[1;37m"   ,TOSTR(obj)),"\033[m"))
+#define HIGHTLIGHT(str)    (str_comb(str_comb("\033[1m"      ,TOSTR(str)),"\033[m"))
+// 斜体文字
+#define ITALIC(str)              (str_comb(str_comb("\033[3m",TOSTR(str)),"\033[m"))
+// 下划线文字
+#define _(str)                   (str_comb(str_comb("\033[4m",TOSTR(str)),"\033[m"))
+// 闪烁文字
+#define FLASGING(str)            (str_comb(str_comb("\033[5m",TOSTR(str)),"\033[m"))
+// 反显文字 - 交换前景色和背景色
+#define Reversedisplay(str)      (str_comb(str_comb("\033[7m",TOSTR(str)),"\033[m"))
 
 // 这是字符串合成函数
 static inline const char* str_comb(const char *str1, const char *str2)
@@ -185,19 +207,6 @@ static inline const char* str2str(const char* str)
 // 兼容Color两种写法
 #define TestColur TestColor
 
-// 原始字体宏
-#define NONE(str)          str"\033[m"
-// 高亮文字
-#define HIGHTLIGHT(str)    "\033[1m"NONE(str)
-// 斜体文字
-#define ITALIC(str)        "\033[3m"NONE(str)
-// 下划线文字
-#define _(str)             "\033[4m"NONE(str)
-// 闪烁文字
-#define FLASGING(str)      "\033[5m"NONE(str)
-// 反显文字 - 交换前景色和背景色
-#define Reversedisplay(str)      "\033[7m"NONE(str)
-
 // 原始打印宏，根据obj类型调用不同的打印函数
 #define _print(obj) (_Generic((obj),    \
     char:		        print_char,     \
@@ -222,15 +231,15 @@ static inline const char* str2str(const char* str)
     float*:             print_p,        \
     double*:            print_p,        \
                                         \
-    default:            print_error     \
+    default:            print_void_or_error     \
     )(obj))
 
 // 原始打印换行宏，直接调用打印函数然后打印换行符
 #define _println(obj) _print(obj), _print("\n")
 
 // 获取参数个数，最多支持10个参数
-#define PrintMacroArgCount(...) _PrintMacroArgCount(__VA_ARGS__, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1)
-#define _PrintMacroArgCount(_0, _1, _2, _3, _4, _5, _6, _7, _8, _9, COUNT, ...) COUNT
+#define _PrintMacroArgCount(_0, _1, _2, _3, _4, _5, _6, _7, _8, _9, COUNT,...) COUNT
+#define PrintMacroArgCount(...) _PrintMacroArgCount("ignored", ##__VA_ARGS__,9,8,7,6,5,4,3,2,1,0)
 
 // 宏黏贴
 #define PrintConcat(A, B) _PrintConcat(A, B)
@@ -240,6 +249,7 @@ static inline const char* str2str(const char* str)
 // 原理: print(a, b, c); 展开后变成 _print(a), _print(b), _print(c);
 #define print(...) _print_(__VA_ARGS__)
 #define _print_(...) PrintConcat(_print_, PrintMacroArgCount(__VA_ARGS__))(__VA_ARGS__)
+#define _print_0()                                              printf("")
 #define _print_1(_0)                                           _print(_0)
 #define _print_2(_0, _1)                                       _print_1(_0), _print(_1)
 #define _print_3(_0, _1, _2)                                   _print_2(_0, _1), _print(_2)
@@ -255,6 +265,7 @@ static inline const char* str2str(const char* str)
 // 原理: println(a, b, c); 展开后变成 _println(a), _println(b), _println(c);
 #define println(...) _println_(__VA_ARGS__)
 #define _println_(...) PrintConcat(_println_, PrintMacroArgCount(__VA_ARGS__))(__VA_ARGS__)
+#define _println_0()                                              print("\n")
 #define _println_1(_0)                                           _println(_0)
 #define _println_2(_0, _1)                                       _println_1(_0), _println(_1)
 #define _println_3(_0, _1, _2)                                   _println_2(_0, _1), _println(_2)
@@ -327,9 +338,9 @@ static inline void print_p(void* obj)
     printf("%p", obj);
 }
 
-static inline void print_error(void *data)
+static inline void print_void_or_error(void *data)
 {
-    _println(RED( "print error!" ));
+    _print(RED( "print error! or" ));
     _println(RED( "don't have this type to print!" ));
 }
 
