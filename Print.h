@@ -4,8 +4,8 @@
  * @emile 1727585014@qq.com 
  * @github https://github.com/COSMICAL-CONTAINER
  * @brief Print anything you want!
- * @version 1.7
- * @date 2024-07-15
+ * @version 1.9
+ * @date 2024-10-05
  * 
  * @copyright Copyright (c) 2024
  * 
@@ -39,6 +39,13 @@
  * V1.7
  * 修复多个文件同时包含Print.h时，函数冲突的问题
  * 加入字体宏，可以高亮、斜体、下划线、闪烁、反显文字
+ * 
+ * V1.8
+ * 修复字体宏高亮、斜体、下划线、闪烁、反显文字打印变量时报错
+ * 重写PrintMacroArgCount宏，现在可以获取没有参数的情况了，实现print()、println(),不传递参数默认打印空白或换行
+ * 
+ * V1.9
+ * 增加endl宏用于换行处理
  */
 
 #ifndef __Print_H__
@@ -48,7 +55,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-#define PRINTMAXSTRLEN 100
+#define PRINTMAXSTRLEN 1000
 
 // 颜色宏代码
 // #define NONE(str)          str"\033[m"
@@ -260,6 +267,8 @@ static inline const char* str2str(const char* str)
 #define _print_8(_0, _1, _2, _3, _4, _5, _6, _7)               _print_7(_0, _1, _2, _3, _4, _5, _6), _print(_7)
 #define _print_9(_0, _1, _2, _3, _4, _5, _6, _7, _8)           _print_8(_0, _1, _2, _3, _4, _5, _6, _7), _print(_8)
 #define _print_10(_0, _1, _2, _3, _4, _5, _6, _7, _8, _9)      _print_9(_0, _1, _2, _3, _4, _5, _6, _7, _8), _print(_9)
+
+#define endl ((char)'\n')
 
 // 打印并换行宏的宏展开，最多支持10个参数
 // 原理: println(a, b, c); 展开后变成 _println(a), _println(b), _println(c);
