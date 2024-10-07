@@ -63,10 +63,13 @@ The printArr macro allows for direct printing of arrays, with a total of three p
 * V1.7
 * Fix the issue of function conflicts when multiple files contain Print. h at the same time
 * Add font macros to highlight, italic, underline, blink, and reverse text
+* 
 * V1.8
 * Fixed errors in font macro highlighting, italics, underscores, blinking, and reverse text printing variables
 * Rewrite the PrintMacroArgCount macro, now it can obtain the situation without parameters, implement print() and println(), and print blank or line breaks by default without passing parameters
-
+* 
+* V1.9
+* Add endl macro for line wrapping processing
 ---
 # C语言 Print.h
 包括一个头文件并用C语言实现打印宏，类似于Python中的打印函数
@@ -142,6 +145,9 @@ printArr宏，能够直接打印数组，一共有三种打印方式可供选择
  * V1.8
  * 修复字体宏高亮、斜体、下划线、闪烁、反显文字打印变量时报错
  * 重写PrintMacroArgCount宏，现在可以获取没有参数的情况了，实现print()、println(),不传递参数默认打印空白或换行
+ * 
+ * V1.9
+ * 增加endl宏用于换行处理
 ---
 Usage
 eg：
