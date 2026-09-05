@@ -1,7 +1,7 @@
 /**
  * @file Print.h
  * @author Cosmical Containter
- * @emile （联系方式已隐去） 
+ * @emile 联系方式已隐去 
  * @github https://github.com/COSMICAL-CONTAINER
  * @brief Print anything you want!
  * @version 1.9
